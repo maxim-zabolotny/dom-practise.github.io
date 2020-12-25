@@ -41,15 +41,12 @@ const state = {
 }
 
 const menuContainer = document.querySelector('.menu-container');
-const menuUl = document.querySelector('.menu');
+const menu = document.querySelector('.menu');
 const toggleMenuButton = document.querySelector('.btn-toogle-menu');
 const wrapper = document.querySelector('.wrapper');
 const title = document.querySelector('.title');
 const image = document.querySelector('.picture');
 const description = document.querySelector('.description');
-const locationLine = document.querySelector('.habitat-line');
-const locationArea = document.querySelector('.habitat');
-const attractionMethod = document.querySelector('.method');
 
 const getViewWidth = () => Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
 const maxAutoHideMenuWidth = 820;
@@ -60,12 +57,11 @@ const toggleMenu = (e) => {
     wrapper.classList.toggle("wide");
 }
 
-const menuItemClickListener = (event)=>{
-
+const setHandlerMenuItem = (event) => {
     if (event.target.matches('.menu-item')) {
+      console.log('me')
       state.activeIndex = Number(event.target.parentNode.id);
       renderPage(state);
-  
       if (getViewWidth() < maxAutoHideMenuWidth) {
         document.querySelector('.btn-toogle-menu').click(); 
       }
@@ -74,7 +70,7 @@ const menuItemClickListener = (event)=>{
   
   const renderMenu = (state)=>{
     
-    menuUl.innerHTML = "";
+    menu.innerHTML = "";
   
     state.rockets.forEach((item,index)=>{
       const li = document.createElement("li");   
@@ -90,11 +86,11 @@ const menuItemClickListener = (event)=>{
       };
   
       li.appendChild(a);
-      menuUl.appendChild(li);
+      menu.appendChild(li);
     });
   };
   
-  const showTextContent = ()=>{
+  const showTextContent = () =>{
     setTimeout(()=> {
       description.classList.remove("transparent");
     }, 150);
@@ -106,23 +102,18 @@ const menuItemClickListener = (event)=>{
   
     title.innerHTML = content.name;
     image.src = content.img;
-    image.alt = content.name + ' image';
+    image.alt = `${content.name} image`;
     description.innerHTML = content.description;
   };
-  
+
   const renderPage = (state) => {
-  
     renderMenu(state);
     renderArticle(state.rockets[state.activeIndex]);
-  
   };
-  
+
   document.addEventListener('DOMContentLoaded', (event)=>{
-    
     renderPage(state);
-  
     toggleMenuButton.addEventListener('click', toggleMenu);
-    menuUl.addEventListener('click',menuItemClickListener);
+    menu.addEventListener('click',setHandlerMenuItem);
     image.addEventListener('load',showTextContent);
-  
   });
